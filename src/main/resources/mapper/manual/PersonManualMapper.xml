@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzfq.house.mybatis.mapper.manual.PersonManualMapper">
+
+  <select id="findList" resultType="map" parameterType="com.jzfq.house.mybatis.domain.Person">
+    select
+    p.name,
+    p.classify,
+    p.type,
+    p.org_id,
+    o.name org_name,
+    p.mobile1,
+    p.mobile2,
+    p.status
+    from person p
+    left join organization o on p.org_id = o.id
+    where p.del = 0
+    <if test="classify != null and classify != ''">
+      and p.classify = #{classify}
+    </if>
+    and p.shield_state = 0
+    order by p.org_id desc
+  </select>
+
+</mapper>

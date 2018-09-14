@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.house.mybatis.mapper.manual.HouseMessageManualMapper">
+    <select id="findList" resultType="com.jzfq.house.model.res.HouseRes" parameterType="com.jzfq.house.model.req.HouseMessageSearch">
+        select
+        hm.id,
+        h.id houseId,
+        h.name houseName,
+        hm.from_person_id fromPersonId,
+        pfrom.username fromPersonName,
+        hm.to_person_id toPersonId,
+        pto.username toPersonName,
+        hm.content,
+        hm.talk_time talkTime,
+        hm.talk_back talkBack,
+        hm.back_time backTime,
+        hm.description
+        from house h
+        left join house_message hm on hm.house_id = h.id
+        left join person pfrom on hm.from_person_id = pfrom.id
+        left join person pto on hm.to_person_id = pto.id
+      <where>
+          <if test="houseName != null and houseName != ''">
+              and h.name = #{houseName}
+          </if>
+      </where>
+    </select>
+</mapper>

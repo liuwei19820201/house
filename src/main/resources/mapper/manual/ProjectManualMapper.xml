@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.house.mybatis.mapper.manual.ProjectManualMapper" >
+
+  <select id="findAll" resultType="map" parameterType="com.jzfq.house.swagger.model.amp.ProjectReq">
+    select
+    p.id,
+    p.house_id,
+    p.house_name,
+    p.name,
+    p.leader,
+    p.leader_tel,
+    p.status,
+    p.project_start,
+    p.project_end,
+    p.remark,
+    p.del,
+    pe.username,
+    pe.mobile1,
+    pe.mobile2
+    from project p left join person pe on p.leader = pe.id
+    <where>
+      <if test="projectId!=null and projectId!=''">
+        and p.id = #{projectId}
+      </if>
+      <if test="houseName!=null and houseName!=''">
+        and house_name like concat('%',#{houseName},'%')
+      </if>
+      <if test="name!=null and name!=''">
+        and p.name like concat('%',#{name},'%')
+      </if>
+      <if test="leader!=null and leader!=''">
+        and pe.name like concat('%',#{leader},'%')
+      </if>
+      <if test="leaderId!=null and leaderId!=''">
+        and pe.id = #{leaderId}
+      </if>
+      <if test="status!=null and status!=''">
+        and p.status = #{status}
+      </if>
+      <if test="projectStart!=null and projectStart!=''">
+        and p.project_start >= #{projectStart}
+      </if>
+      <if test="projectEnd!=null and projectEnd!=''">
+        and p.project_end &lt; #{projectEnd}
+      </if>
+    </where>
+    order by p.create_time desc
+  </select>
+
+</mapper>

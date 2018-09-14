@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.house.mybatis.mapper.manual.ResourceRecordManualMapper" >
+
+  <select id="findAll" resultType="map" parameterType="com.jzfq.house.swagger.model.amp.ResourcesRecordReq">
+    select
+    id,
+    project_link_id,
+    res_name,
+    person_id,
+    person_name,
+    budget,
+    pay,
+    important_matters,
+    content,
+    type,
+    commit_person,
+    commit_time,
+    remark
+    from resources_record r
+    <where>
+      <if test="projectLinkId!=null and projectLinkId!=''">
+        and r.project_link_id = #{projectLinkId}
+      </if>
+      <if test="id!=null and id!=''">
+        and r.id = #{id}
+      </if>
+    </where>
+    order by r.create_time desc
+  </select>
+
+</mapper>

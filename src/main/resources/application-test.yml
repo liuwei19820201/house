@@ -1,0 +1,45 @@
+mybatis:
+  mapper-locations: mapper/**/*.xml
+  type-aliases-package: com.jzfq.house.mybatis.mapper
+  type-handlers-package: org.apache.ibatis.type.LocalDateTypeHandler
+
+spring:
+  jpa:
+    database: mysql
+    generate-ddl: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+  datasource:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://47.104.100.97:3306/pitaya?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+      username: root
+      password: Garen666
+      type: com.zaxxer.hikari.HikariDataSource
+  redis:
+      database: 0
+      host: 47.104.100.97
+      port: 6379
+      password: Garen666
+      timeout: 6000
+server:
+  port: 9091
+  tomcat:
+    max-threads: 1024
+    uri-encoding: utf-8
+#    basedir: /home/tomcat-cas
+
+increment:
+  path: D:\obj_store
+
+
+wx:
+  login:
+    jwt:
+      sec: WX_PROGRAM_LOGIN_TEST
+      tokenName: WX_PROGRAM_LOGIN_TOKEN
+      ttlMillis: 6000000 #单位：毫秒
+    userFilter: true
+    timeout: 3600 #单位:分钟

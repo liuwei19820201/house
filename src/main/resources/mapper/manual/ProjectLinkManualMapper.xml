@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.house.mybatis.mapper.manual.ProjectLinkManualMapper" >
+
+  <select id="findAll" resultType="map" parameterType="com.jzfq.house.swagger.model.amp.ProjectLinkReq">
+
+    select
+    p.id p_id,
+    p.house_id,
+    p.house_name,
+    p.name,
+    pe.name p_leader_name,
+    p.leader_tel,
+    p.status p_status,
+    p.project_start,
+    p.project_end,
+    pl.link_id,
+    pl.id project_link_id,
+    pl.link_name,
+    pel.name l_leader_name,
+    pl.leader_tel l_leader_tel,
+    pl.status l_status,
+    pl.start_time,
+    pl.end_time,
+    pl.target
+    from project_link pl
+    left join project p on pl.project_id = p.id
+    left join link_person lp on pl.id = lp.project_link_id
+    left join person pe on p.leader = pe.id /*项目负责人*/
+    left join person pel on pl.leader = pel.id /*环节负责人*/
+    where pl.del = 0
+      <if test="projectLinkId != null and projectLinkId != ''">
+        and pl.id = #{projectLinkId}
+      </if>
+      <if test="projectId != null and projectId != ''">
+        and p.id = #{projectId}
+      </if>
+      <if test="projectName != null and projectName != ''">
+        and p.name like concat('%',#{projectName},'%')
+      </if>
+      <if test="projectLinkName != null and projectLinkName != ''">
+        and pl.link_name like concat('%',#{projectLinkName},'%')
+      </if>
+      <if test="projectStatus != null and projectStatus != ''">
+        and p.status = #{projectStatus}
+      </if>
+      <if test="linkStatus != null and linkStatus != ''">
+        and pl.status = #{linkStatus}
+      </if>
+    order by p.create_time desc
+  </select>
+
+  <update id="updateProjectLinkStatus" parameterType="com.jzfq.house.swagger.model.amp.ProjectLinkReq">
+    update project_link status = #{linkStatus}, update_time = now(), update_user = #{updateUser} where id = #{projectLinkId}
+  </update>
+
+  <update id="updateProjectLinkDate" parameterType="com.jzfq.house.swagger.model.amp.ProjectLinkReq">
+    update project_link start_time = #{startTime}, end_time = #{endTime}, update_time = now(), update_user = #{updateUser} where id = #{projectLinkId}
+  </update>
+
+  <update id="updateProjectLinkLeader" parameterType="com.jzfq.house.swagger.model.amp.ProjectLinkReq">
+    update project_link leader = #{leaderId}, leader_tel = #{leaderTel}, update_time = now(), update_user = #{updateUser} where id = #{projectLinkId}
+  </update>
+
+  <select id="selectWaitingInfos" resultType="com.jzfq.house.mybatis.domain.WaitingInfo" parameterType="java.lang.String">
+    SELECT
+    pj.id AS projectId,
+    pj.`name` AS projectName,
+    pl.id AS projectLinkId,
+    pl.link_name AS linkName,
+    pl.sort AS linkSort,
+    p.username
+    FROM
+    project pj
+    INNER JOIN project_link pl ON pj.id = pl.project_id
+    INNER JOIN link_person lp ON lp.project_link_id = pl.id
+    INNER JOIN person p ON p.id = lp.person_id
+    WHERE p.username = #{username}
+  </select>
+</mapper>

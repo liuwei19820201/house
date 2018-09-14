@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzfq.house.mybatis.mapper.manual.HouseManualMapper">
+    <select id="findList" resultType="com.jzfq.house.model.res.HouseRes" parameterType="com.jzfq.house.model.req.HouseSearch">
+      select * from house h  left join area a on h.area_id = a.id
+      <where>
+          <if test="name != null and name != ''">
+              and h.name = #{name}
+          </if>
+      </where>
+        <if test="scoreSort == true">
+            order by h.score desc
+        </if>
+        <if test="areaSort == true">
+            order by a.name
+        </if>
+    </select>
+</mapper>

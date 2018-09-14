@@ -1,0 +1,32 @@
+mybatis:
+  mapper-locations: mapper/*.xml
+  type-aliases-package: com.jzfq.house.mybatis.mapper
+  type-handlers-package: org.apache.ibatis.type.LocalDateTypeHandler
+
+spring:
+  jpa:
+    database: mysql
+    generate-ddl: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  datasource:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/pitaya?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+      username: root
+      password: 123456
+      type: com.zaxxer.hikari.HikariDataSource
+  redis:
+      database: 0
+      host: localhost
+      port: 6379
+      password:
+      timeout: 6000
+server:
+  port: 9090
+  tomcat:
+    max-threads: 1024
+    uri-encoding: utf-8
+#    basedir: /home/tomcat-cas
+
+incrementPath: aaa
